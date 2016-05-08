@@ -22,8 +22,9 @@ app.get('/', function (req, res) {
   res.send('hello world');
 });
 
-app.listen(app.get('port') || 3000, function () {
-  console.log('Node app is running on port', app.get('port') || 3000);
+var port = process.env.PORT || 3000;
+app.listen(port, function () {
+  console.log('Node app is running on port', port);
 });
 
 // var words = new pos.Lexer().lex('You have an ugly car.');

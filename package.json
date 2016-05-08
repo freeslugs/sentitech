@@ -7,8 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel --presets es2015,stage-0 app.js -o build/app.js",
     "server": "npm run build && node build/app.js",
-    "client": "gulp serve-static",
-    "postinstall": "bower install"
+    "client": "gulp serve-static"
   },
   "repository": {
     "type": "git",
