@@ -17,13 +17,19 @@ var app = express();
 
 app.use(cors());
 
-app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/api', function(req, res) {
+app.post('/api/getsentiment', function(req, res) {
   getSentiment(req.body.text, function(score) {
     res.send(score);
   });
+});
+
+app.post('/api/sentimentize', function(req, res) {
+  // req.body.text
+  // req.body.sentiment //=> postive or negative
+  // res.send(score);
 });
 
 var port = process.env.PORT || 3000;
