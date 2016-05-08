@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel --presets es2015,stage-0 app.js -o build/app.js",
-    "dev": "npm run build && node build/app.js",
+    "server": "npm run build && node build/app.js",
+    "client": "gulp serve-static",
     "postinstall": "bower install"
   },
   "repository": {
@@ -37,6 +38,7 @@
     "babel-preset-stage-0": "^6.5.0"
   },
   "dependencies": {
+    "cors": "^2.7.1",
     "express": "^4.13.4",
     "pos": "^0.3.0"
   }
