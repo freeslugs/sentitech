@@ -1,5 +1,14 @@
 import pos from "pos" 
 
+var AlchemyAPI = require('../alchemyapi');
+var alchemyapi = new AlchemyAPI(process.env.ALCHEMY_KEY);
+
+function getSentiment(text, callback) {
+  alchemyapi.sentiment("text", text, {}, function(response) {
+    callback(response["docSentiment"]["score"]);
+  });
+}
+
 var express = require('express');
 var cors = require('cors');
 var bodyParser = require('body-parser');
@@ -12,7 +21,9 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/api', function(req, res) {
-  res.send(req.body);
+  getSentiment(req.body.text, function(score) {
+    res.send(score);
+  });
 });
 
 var port = process.env.PORT || 3000;
