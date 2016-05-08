@@ -36,7 +36,7 @@
       }
 
       jQuery.ajax(settings).done(function (response) {
-        console.log(response);
+        setBody(response);
       });
     });
   }
@@ -71,13 +71,14 @@
     // Office.context.mailbox.item.body.setAsync(
     //   '<a id="LPNoLP" href="http://www.contoso.com">Click here!</a>', 
     //   {coercionType: Office.CoercionType.Html});
+    sentimentize(1);
   }
 
   function getSubject(){
     // Office.cast.item.toItemCompose(Office.context.mailbox.item).subject.getAsync(function(result){
     //   app.showNotification('The current subject is', result.value);
     // });
-    sentimentize(sentiment);
+    sentimentize(0);
     // getSentiment(function(score) {
     //   var percent = Math.round(score*100)/100 + "%";
     //   jQuery("#sentiment").text(percent);

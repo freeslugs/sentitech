@@ -76,7 +76,6 @@ app.listen(port, function() {
 });
 
 
-
 function getMinMax(word, sentiment) {
   return new Promise(function(resolvea,rejecta) {
     getSynonyms(word, function(synonyms) {
