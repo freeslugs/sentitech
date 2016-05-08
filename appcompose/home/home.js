@@ -10,50 +10,78 @@
       jQuery('#get-subject').click(getSubject);
       jQuery('#add-to-recipients').click(addToRecipients);
 
-      getSentiment();
+      getSentiment(function(score) {
+        var percent = Math.round(score*10000)/100 + "%";
+        jQuery("#sentiment").text(percent);
+      });
     });
   };
 
-  function getSentiment() {
+  function sentimentize(sentiment) {
     getBody(function(result) {
-      // jQuery.get("localhost:3000").then(function(data) {
-      //   console.log(data);
-      // });
-      jQuery.ajax({
-          url: "https://localhost:3000",
-       
-          // The name of the callback parameter, as specified by the YQL service
-          jsonp: "callback",
-       
-          // Tell jQuery we're expecting JSONP
-          dataType: "jsonp",
-       
-          // Tell YQL what we want and that we want JSON
-          data: {
-              q: "select title,abstract,url from search.news where query=\"cat\"",
-              format: "json"
-          },
-       
-          // Work with the response
-          success: function( response ) {
-              console.log( response ); // server response
-          }
+      var body = result.value;
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://sentitech-api.herokuapp.com/api/sentimentize",
+        "method": "POST",
+        "headers": {
+          "content-type": "application/x-www-form-urlencoded",
+          "cache-control": "no-cache"
+        },
+        "data": {
+          "text": body,
+          "sentiment": sentiment
+        }
+      }
+
+      jQuery.ajax(settings).done(function (response) {
+        console.log(response);
+      });
+    });
+  }
+
+  function getSentiment(callback) {
+    getBody(function(result) {
+      var body = result.value;
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://sentitech-api.herokuapp.com/api/getsentiment",
+        "method": "POST",
+        "headers": {
+          "content-type": "application/x-www-form-urlencoded",
+          "cache-control": "no-cache"
+        },
+        "data": {
+          "text": body 
+        }
+      }
+
+      jQuery.ajax(settings).done(function (response) {
+        if(callback) {
+          callback(response);  
+        }
       });
     });
   }
 
   function setSubject(){
     // Office.cast.item.toItemCompose(Office.context.mailbox.item).subject.setAsync('Hello world!');
-    Office.context.mailbox.item.body.setAsync(
-      '<a id="LPNoLP" href="http://www.contoso.com">Click here!</a>', 
-      {coercionType: Office.CoercionType.Html});
+    // Office.context.mailbox.item.body.setAsync(
+    //   '<a id="LPNoLP" href="http://www.contoso.com">Click here!</a>', 
+    //   {coercionType: Office.CoercionType.Html});
   }
 
   function getSubject(){
     // Office.cast.item.toItemCompose(Office.context.mailbox.item).subject.getAsync(function(result){
     //   app.showNotification('The current subject is', result.value);
     // });
-    
+    sentimentize(sentiment);
+    // getSentiment(function(score) {
+    //   var percent = Math.round(score*100)/100 + "%";
+    //   jQuery("#sentiment").text(percent);
+    // });
   }
 
   function setBody(text) {
