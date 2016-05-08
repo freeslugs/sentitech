@@ -8,12 +8,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var express = require('express');
 var cors = require('cors');
+var bodyParser = require('body-parser');
+
 var app = express();
 
 app.use(cors());
 
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.post('/api', function (req, res) {
-  console.log(req.body);
   res.send(req.body);
 });
 
